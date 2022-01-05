@@ -33,10 +33,10 @@ jobs:
       working-directory: charts
       id: list-changed
       run: |
-        changed=$(ct list-changed)
-        if [[ -n "$changed" ]]; then
-          echo "::set-output name=changed::true"
-        fi
+        # changed=$(ct list-changed)
+        # if [[ -n "$changed" ]]; then
+        #   echo "::set-output name=changed::true"
+        # fi
         echo "::set-output name=changed::true"
 
     - name: Run chart-testing (lint)
