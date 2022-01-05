@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "azdo-pipelines-agent.fullname" . }}
+  labels:
+    {{- include "azdo-pipelines-agent.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "azdo-pipelines-agent.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "azdo-pipelines-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "azdo-pipelines-agent.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "azdo-pipelines-agent.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{ if .Values.image.versionOverride }}
+          image: ghcr.io/crayon/azdo-pipelines-agent: {{- .Values.image.version }}
+          {{ else }}
+          image: ghcr.io/crayon/azdo-pipelines-agent: {{- .Chart.AppVersion }}
+          {{ end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          livenessProbe:
+            exec:
+              command:
+              - cat
+              - /azp/start.sh
+          readinessProbe:
+            exec:
+              command:
+              - cat
+              - /azp/start.sh
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          - name: AZP_URL
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.azdoSecret }}
+                key: AZP_URL
+          - name: AZP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.azdoSecret }}
+                key: AZP_TOKEN
+          - name: AZP_POOL
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.azdoSecret }}
+                key: AZP_POOL
+          volumeMounts:
+          - name: data
+            mountPath: /azp/_work
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
+        {{- with .Values.storage.storageClassName }}
+        storageClassName: {{ .Values.storage.storageClassName }}
+        {{- end }}
