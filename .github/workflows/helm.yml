@@ -30,6 +30,7 @@ jobs:
       uses: helm/chart-testing-action@v2.1.0
 
     - name: Run chart-testing (list-changed)
+      working-directory: charts
       id: list-changed
       run: |
         changed=$(ct list-changed)
@@ -38,6 +39,7 @@ jobs:
         fi
 
     - name: Run chart-testing (lint)
+      working-directory: charts
       run: ct lint
 
   release:
@@ -61,5 +63,7 @@ jobs:
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.1
+        with:
+          charts_dir: charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
