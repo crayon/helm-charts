@@ -40,7 +40,7 @@ jobs:
 
     - name: Run chart-testing (lint)
       working-directory: charts
-      run: ct lint
+      run: ct lint --target-branch main
 
   release:
     runs-on: ubuntu-latest
