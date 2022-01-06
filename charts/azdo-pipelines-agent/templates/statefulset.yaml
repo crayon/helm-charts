@@ -37,11 +37,15 @@ spec:
               command:
               - cat
               - /azp/start.sh
+            initialDelaySeconds: 3
+            periodSeconds: 15
           readinessProbe:
             exec:
               command:
               - cat
               - /azp/start.sh
+            initialDelaySeconds: 3
+            periodSeconds: 15
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
