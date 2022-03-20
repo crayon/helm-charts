@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   azdo-pipelines-agent:
   - apiVersion: v2
+    appVersion: 2.200.2
+    created: "2022-03-20T20:32:59.827283173Z"
+    description: Helm chart for deploying the pipelines agent container built by Crayon.
+    digest: 92968efa98d419b008d4f72f5d67a94677d772dd2a69c29c04b2d40e7c12f671
+    name: azdo-pipelines-agent
+    type: application
+    urls:
+    - https://github.com/crayon/helm-charts/releases/download/azdo-pipelines-agent-0.3.0/azdo-pipelines-agent-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     appVersion: 2.195.2
     created: "2022-01-06T15:17:35.461102185Z"
     description: Helm chart for deploying the pipelines agent container built by Crayon.
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/crayon/helm-charts/releases/download/azdo-pipelines-agent-0.1.0/azdo-pipelines-agent-0.1.0.tgz
     version: 0.1.0
-generated: "2022-01-06T15:17:35.461109785Z"
+generated: "2022-03-20T20:32:59.827294573Z"
