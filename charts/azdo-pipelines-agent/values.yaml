@@ -4,7 +4,7 @@ image:
   # If set to true, you can define the version
   # parameter to set the desired version
   versionOverride: false
-  # version: 2.195.2
+  version: v2.200.2
   pullPolicy: IfNotPresent
 
 azdoSecret: azdevops

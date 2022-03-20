@@ -3,4 +3,4 @@ name: azdo-pipelines-agent
 description: Helm chart for deploying the pipelines agent container built by Crayon.
 type: application
 version: 0.2.0
-appVersion: "2.195.2"
+appVersion: "2.200.2"
